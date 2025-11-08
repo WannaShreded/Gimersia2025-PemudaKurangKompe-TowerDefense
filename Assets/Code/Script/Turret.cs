@@ -27,7 +27,7 @@ public class Turret : MonoBehaviour {
             return;
         }
 
-        RotateTowardsTarget();
+        //RotateTowardsTarget();
 
         if (!CheckTargetIsInRange())
         {
@@ -65,14 +65,14 @@ public class Turret : MonoBehaviour {
         return Vector2.Distance(target.position, transform.position) <= targetingRange;
     }
     
-    private void RotateTowardsTarget() {
-        float angle = Mathf.Atan2(target.position.y - transform.position.y, target.position.x -
-        transform.position.x) * Mathf.Rad2Deg - 90f;
+    // private void RotateTowardsTarget() {
+    //     float angle = Mathf.Atan2(target.position.y - transform.position.y, target.position.x -
+    //     transform.position.x) * Mathf.Rad2Deg - 90f;
 
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
-        turretRotationPoint.rotation = Quaternion.RotateTowards(turretRotationPoint.rotation,
-        targetRotation, rotationSpeed * Time.deltaTime);
-    }
+    //     Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+    //     turretRotationPoint.rotation = Quaternion.RotateTowards(turretRotationPoint.rotation,
+    //     targetRotation, rotationSpeed * Time.deltaTime);
+    // }
 
     private void OnDrawGizmosSelected() {
         Handles.color = Color.cyan;

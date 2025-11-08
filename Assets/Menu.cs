@@ -9,12 +9,12 @@ public class Menu : MonoBehaviour
     [SerializeField] TextMeshProUGUI currencyUI;
     [SerializeField] Animator anim;
 
-    private bool isMenuOpen = true;
+    private bool isOpenShop = true;
 
     public void ToggleMenu()
     {
-        isMenuOpen = !isMenuOpen;
-        anim.SetBool("MenuOpen", isMenuOpen);
+        isOpenShop = !isOpenShop;
+        anim.SetBool("OpenShop", isOpenShop);
     }
 
     private void OnGUI()
