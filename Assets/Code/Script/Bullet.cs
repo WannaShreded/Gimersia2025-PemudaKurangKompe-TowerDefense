@@ -10,12 +10,25 @@ public class Bullet : MonoBehaviour {
     [Header("Attributes")]
     [SerializeField] private float bulletSpeed = 5f;
     [SerializeField] private int bulletDamage = 1;
+    [SerializeField] private float bulletDestroyTime = 5f;
 
     private Transform target;
+    private float timeAlive;
 
     public void SetTarget(Transform _target)
     {
         target = _target;
+        timeAlive = 0f;
+    }
+
+    private void Update()
+    {
+        timeAlive += Time.deltaTime;
+        if (timeAlive >= bulletDestroyTime)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void FixedUpdate()
