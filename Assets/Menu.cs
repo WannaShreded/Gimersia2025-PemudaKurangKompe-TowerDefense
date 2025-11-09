@@ -13,6 +13,7 @@ public class Menu : MonoBehaviour
 
     public void ToggleMenu()
     {
+        if (Time.timeScale == 0f) return;
         isOpenShop = !isOpenShop;
         anim.SetBool("OpenShop", isOpenShop);
     }

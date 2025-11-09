@@ -15,8 +15,16 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float difficultyScalingFactor = 0.75f;
     [SerializeField] private float enemiesPerSecondCap = 15f;
 
+    [Header("Objectives")]
+    [SerializeField] private int goalWaves = 10;
+
     [Header("Events")]
     public static UnityEvent onEnemyDestroy = new UnityEvent();
+    // Invoked whenever the current wave changes. Passes the new current wave as an int.
+    public static UnityEvent<int> onWaveChanged = new UnityEvent<int>();
+
+    [Header("UI References")]
+    [SerializeField] private GameObject missionCompletePanel;
 
     private int currentWave = 1;
     private float timeSinceLastSpawn;
@@ -30,6 +38,10 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void Start() {
+        if (missionCompletePanel != null)
+        {
+            missionCompletePanel.SetActive(false);
+        }
         StartCoroutine(StartWave());
     }
 
@@ -66,7 +78,34 @@ public class EnemySpawner : MonoBehaviour {
         isSpawning = false;
         timeSinceLastSpawn = 0f;
         currentWave++;
-        StartCoroutine(StartWave());
+
+        // Notify listeners about the new wave number
+        onWaveChanged.Invoke(currentWave);
+
+        if (currentWave > goalWaves)
+        {
+            ShowMissionComplete();
+        }
+        else
+        {
+            StartCoroutine(StartWave());
+        }
+    }
+
+    // Public read-only access for UI/other systems to query the current wave
+    public int CurrentWave { get { return currentWave; } }
+
+    private void ShowMissionComplete()
+    {
+        if (missionCompletePanel != null)
+        {
+            Time.timeScale = 0f;  // Pause the game
+            missionCompletePanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Mission Complete Panel not assigned in EnemySpawner!");
+        }
     }
      
     private void SpawnEnemy() {

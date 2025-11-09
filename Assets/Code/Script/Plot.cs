@@ -18,6 +18,7 @@ public class Plot : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (Time.timeScale == 0f) return;
         sr.color = hoverColor;
     }
 
@@ -28,13 +29,19 @@ public class Plot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (tower != null) return;
+        if (Time.timeScale == 0f) return;
+        if (tower != null)
+        {
+            LevelManager.main.ShowWarningMessage("Cannot build here - Plot is occupied!");
+            return;
+        }
 
         Tower towerToBuild = BuildManager.main.GetSelectedTower();
 
         if (towerToBuild.cost > LevelManager.main.currency)
         {
-            Debug.Log("Not enough currency to build that!");
+            // Use LevelManager's SpendCurrency which will show the warning message
+            LevelManager.main.SpendCurrency(towerToBuild.cost);
             return;
         }
 
